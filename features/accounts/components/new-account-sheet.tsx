@@ -5,6 +5,7 @@ import { insertAccountSchema } from "@/db/schema"
 import { z } from "zod"
 import { useCreateAccount } from "../api/use-create-accounts"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const formSchema = insertAccountSchema.pick({
   name: true,
 })
