@@ -2,25 +2,25 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useNewAccount } from "@/features/accounts/hooks/use-new-account";
 import { Plus } from "lucide-react";
 import { columns } from "./columns";
 import { DataTable } from "@/components/data-table";
-import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts";
+import { useBulkDeleteCategories } from "@/features/categories/api/use-bulk-delete-categories";
+import { useNewCategory } from "@/features/categories/hooks/use-new-category";
+import { useGetCategories } from "@/features/categories/api/use-get-categories";
 
-const AccountsPage = () => {
-  const newAccount = useNewAccount();
-  const deleteAccounts = useBulkDeleteAccounts();
-  const accountsQuery = useGetAccounts();
-  const accounts = accountsQuery.data || [];
+const CategoriesPage = () => {
+  const newCategory = useNewCategory();
+  const deleteCategories = useBulkDeleteCategories();
+  const categoriesQuery = useGetCategories();
+  const accounts = categoriesQuery.data || [];
 
   const isDisabled =
-    accountsQuery.isLoading ||
-    deleteAccounts.isPending;
+    categoriesQuery.isLoading ||
+    deleteCategories.isPending;
 
-  if (accountsQuery.isLoading) {
+  if (categoriesQuery.isLoading) {
     return (
       <div
         className="max-w-screen-2xl mx-auto w-full pb-10 -mt-24"
@@ -47,11 +47,11 @@ const AccountsPage = () => {
       <Card className="border-none drop-shadow-sm">
         <CardHeader className="md:flex flex-col gap-y-2 md:flex-row md:items-center md:justify-between">
           <CardTitle className="text-xl line-clamp-1">
-            Manage Accounts
+            Manage Categories
           </CardTitle>
           <Button
             size="sm"
-            onClick={newAccount.onOpen}
+            onClick={newCategory.onOpen}
           >
             <Plus className="size-4 mr-2" />
             Add new
@@ -64,7 +64,7 @@ const AccountsPage = () => {
             data={accounts}
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
-              deleteAccounts.mutate({ ids });
+              deleteCategories.mutate({ ids });
             }}
             disabled={isDisabled}
           />
@@ -74,4 +74,4 @@ const AccountsPage = () => {
   )
 }
 
-export default AccountsPage;
+export default CategoriesPage;

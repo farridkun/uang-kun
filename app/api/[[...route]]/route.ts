@@ -1,8 +1,9 @@
 import { Hono } from 'hono'
 import { handle } from 'hono/vercel'
+import { HTTPException } from 'hono/http-exception'
 
 import accounts from './accounts'
-import { HTTPException } from 'hono/http-exception'
+import categories from './categories'
 
 export const runtime = 'edge'
 
@@ -16,8 +17,10 @@ app.onError((err, c) => {
   return c.json({ error: 'Internal error' }, 500)
 })
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const routes = app
   .route('accounts', accounts)
+  .route('categories', categories)
 
 export const GET = handle(app)
 export const POST = handle(app)
