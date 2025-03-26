@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { Suspense } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -7,10 +8,12 @@ type Props = {
 const DashboardLayout = ({ children }: Props) => {
   return (
     <>
-      <Header />
-      <div className="px-3 lg:px-14">
-        {children}
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header />
+        <div className="px-3 lg:px-14">
+          {children}
+        </div>
+      </Suspense>
     </>
   )
 };

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import qs from 'query-string'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { DateRange } from 'react-day-picker';
@@ -57,52 +57,54 @@ export const DateFilter = () => {
   }
 
   return(
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          disabled={false}
-          size='sm'
-          variant='outline'
-          className='lg:w-auto w-full h-9 rounded-md px-3 font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus:ring-offset-0 focus:ring-transparent outline-none text-white focus:bg-white/30 transition'
-        >
-          <span>
-            {formatDateRange(paramState)}
-          </span>
-          <ChevronDown className='size-4 ml-2' />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className='w-auto p-0' align='start'>
-        <Calendar
-          disabled={false}
-          initialFocus
-          mode='range'
-          defaultMonth={date?.from}
-          selected={date}
-          numberOfMonths={2}
-          onSelect={setDate}
-        />
-        <div className='flex items-center gap-x-2 px-4 pb-4 pt-2 w-full'>
-          <PopoverClose asChild>
-            <Button
-              onClick={onReset}
-              disabled={!date?.from || !date?.to}
-              className='flex-1'
-              variant='outline'
-            >
-              Reset
-            </Button>
-          </PopoverClose>
-          <PopoverClose asChild>
-            <Button
-              onClick={() => pushToUrl(date)}
-              disabled={!date?.from || !date?.to}
-              className='flex-1'
-            >
-              Apply
-            </Button>
-          </PopoverClose>
-        </div>
-      </PopoverContent>
-    </Popover>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            disabled={false}
+            size='sm'
+            variant='outline'
+            className='lg:w-auto w-full h-9 rounded-md px-3 font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus:ring-offset-0 focus:ring-transparent outline-none text-white focus:bg-white/30 transition'
+          >
+            <span>
+              {formatDateRange(paramState)}
+            </span>
+            <ChevronDown className='size-4 ml-2' />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className='w-auto p-0' align='start'>
+          <Calendar
+            disabled={false}
+            initialFocus
+            mode='range'
+            defaultMonth={date?.from}
+            selected={date}
+            numberOfMonths={2}
+            onSelect={setDate}
+          />
+          <div className='flex items-center gap-x-2 px-4 pb-4 pt-2 w-full'>
+            <PopoverClose asChild>
+              <Button
+                onClick={onReset}
+                disabled={!date?.from || !date?.to}
+                className='flex-1'
+                variant='outline'
+              >
+                Reset
+              </Button>
+            </PopoverClose>
+            <PopoverClose asChild>
+              <Button
+                onClick={() => pushToUrl(date)}
+                disabled={!date?.from || !date?.to}
+                className='flex-1'
+              >
+                Apply
+              </Button>
+            </PopoverClose>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </Suspense>
   )
 }

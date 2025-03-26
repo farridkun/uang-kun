@@ -4,6 +4,7 @@ import { cva, VariantProps } from "class-variance-authority"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import { CountUp } from "./count-up"
 import { Skeleton } from "./ui/skeleton"
+import { Eye, EyeClosed } from "lucide-react"
 
 const boxVariant = cva(
   'rounded-md p-3',
@@ -47,7 +48,9 @@ interface DataCardProps extends BoxVariants, IconVariants {
   value?: number
   percentageChange?: number
   icon: IconType
-  dateRange: string
+  dateRange: string,
+  isHideAmount?: boolean,
+  onChangeHideAmount?: () => void
 }
 
 export const DataCard = ({
@@ -57,14 +60,19 @@ export const DataCard = ({
   variant,
   percentageChange = 0,
   dateRange,
+  isHideAmount = false,
+  onChangeHideAmount,
 }: DataCardProps) => {
   return (
     <Card className="border-none drop-shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between gap-x-4">
         <div className="space-y-2">
-          <CardTitle className="text-2xl line-clamp-1">
-            {title}
-          </CardTitle>
+            <CardTitle className="text-2xl line-clamp-1 flex items-center">
+              {title}
+              {isHideAmount ?
+                <EyeClosed onClick={onChangeHideAmount} className="size-6 ml-2 cursor-pointer" />
+                : <Eye onClick={onChangeHideAmount} className="size-6 ml-2 cursor-pointer" />}
+            </CardTitle>
           <CardDescription className="line-clamp-1">
             {dateRange}
           </CardDescription>
@@ -79,14 +87,16 @@ export const DataCard = ({
       </CardHeader>
       <CardContent>
         <h1 className="font-bold text-2xl mb-2 line-clamp-1 break-all">
-          <CountUp
-            preserveValue
-            start={0}
-            end={value}
-            decimals={2}
-            decimalPlaces={2}
-            formattingFn={formatCurrency}
-          />
+          {isHideAmount ? 'Rp **.****' :
+            <CountUp
+              preserveValue
+              start={0}
+              end={value}
+              decimals={2}
+              decimalPlaces={2}
+              formattingFn={formatCurrency}
+            />
+          }
         </h1>
         <p
           className={cn(

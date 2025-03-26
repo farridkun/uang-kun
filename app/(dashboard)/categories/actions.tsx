@@ -41,7 +41,7 @@ export const Actions = ({ id }: Props) => {
         <DropdownMenuTrigger asChild>
           <Button
             variant='ghost'
-            className="size-8 p-o"
+            className="size-8 p-0"
           >
             <MoreHorizontal className="size-4" />
           </Button>
